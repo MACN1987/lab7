@@ -1,0 +1,54 @@
+# Criação de um jogo da velha
+
+def exibir_tabuleiro(tabuleiro):
+    for linha in tabuleiro:
+        print(" | ".join(linha))
+        print("-" * 5)
+
+def verificar_vencedor(tabuleiro):
+    for linha in tabuleiro:
+        if linha[0] == linha[1] == linha[2] and linha[0] != " ":
+            return linha[0]
+
+    for coluna in range(3):
+        if tabuleiro[0][coluna] == tabuleiro[1][coluna] == tabuleiro[2][coluna] and tabuleiro[0][coluna] != " ":
+            return tabuleiro[0][coluna]
+
+    if tabuleiro[0][0] == tabuleiro[1][1] == tabuleiro[2][2] and tabuleiro[0][0] != " ":
+        return tabuleiro[0][0]
+    if tabuleiro[0][2] == tabuleiro[1][1] == tabuleiro[2][0] and tabuleiro[0][2] != " ":
+        return tabuleiro[0][2]
+
+    return None
+
+def jogo_da_velha():
+    tabuleiro = [[" " for _ in range(3)] for _ in range(3)]
+    jogador_atual = "X"
+    jogadas_restantes = 9
+
+    while jogadas_restantes > 0:
+        print(f"Turno do jogador {jogador_atual}:")
+        exibir_tabuleiro(tabuleiro)
+
+        linha = int(input("Escolha a linha (0, 1 ou 2): "))
+        coluna = int(input("Escolha a coluna (0, 1 ou 2): "))
+
+        if tabuleiro[linha][coluna] != " ":
+            print("Posição já ocupada! Tente novamente.")
+            continue
+
+        tabuleiro[linha][coluna] = jogador_atual
+        jogadas_restantes -= 1
+
+        vencedor = verificar_vencedor(tabuleiro)
+        if vencedor:
+            exibir_tabuleiro(tabuleiro)
+            print(f"Parabéns! O jogador {vencedor} venceu!")
+            return
+
+        jogador_atual = "O" if jogador_atual == "X" else "X"
+
+    exibir_tabuleiro(tabuleiro)
+    print("Empate! Ninguém venceu.")
+
+jogo_da_velha()
